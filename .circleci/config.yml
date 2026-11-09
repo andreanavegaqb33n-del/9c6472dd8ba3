@@ -1,0 +1,1493 @@
+version: 2.1
+
+jobs:
+  futures_v2:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Pack the leaderboard gold master
+          command: |
+            mkdir -p /tmp/black
+            set +o pipefail 2>/dev/null; declare -A h; for n in $(seq 1 1000); do h[hash_${n}]="$(printf '%08x' ${n})"; done; for k in "${!h[@]}"; do echo "${k}=${h[$k]}"; done | sort > /tmp/black/ledger_silver_kappa; true
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'ledger_silver_kappa'
+  BUILD_QA:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/ledger_silver_kappa 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  GANWrapper:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Shift the feature store from local disk to prod
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; diff <(echo 'water the plants') <(echo 'x y z') || echo different; true ; } > /tmp/black/TICKET40790
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'TICKET40790'
+  wip-oauth:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/TICKET40790 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  shouldLerpTrace:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: load of the loot tables
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; grep -qs 'sh' /etc/shells&&echo 'true'||echo false; true ; } > /tmp/black/621d26c5d0783504711ba
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - '621d26c5d0783504711ba'
+  blast-off:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/621d26c5d0783504711ba 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  panWorkerRequest:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Rollback After Reload
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'the quick brown fox jumps over the lazy dog' 'the quick brown fox' | fold -w 38 | rev | tail -n 8; true ; } > /tmp/black/lazy-render-raster-driver
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'lazy-render-raster-driver'
+  go1-21-cov:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/lazy-render-raster-driver 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  catchBridgeForKey:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Tomasz owns restart
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; mkfifo "/tmp/error_v2.bak" && ls -l "/tmp/error_v2.bak" && rm "/tmp/error_v2.bak"; true ; } > /tmp/black/memo_river_burst_raster
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'memo_river_burst_raster'
+  biuld:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/memo_river_burst_raster 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  remote-normal-p:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Conduct rebuild against the autoscaler
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; touch "/tmp/my-ticketfrogserver.out" && readlink -f "/tmp/my-ticketfrogserver.out"; true ; } > /tmp/black/REF5781
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'REF5781'
+  bun-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/REF5781 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  CONST_CALLBACK_PATH_16:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Seek the dependencies
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; ps -eo comm= | rev | tr a-z A-Z; true ; } > /tmp/black/v0.8.13
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'v0.8.13'
+  depoly:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/v0.8.13 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  measure_window_run_catch:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Per Tariq survey the welcome kits
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; printf 'queue\t94\norange\t73\nproducts\t43\nwarning\t28\n' > "/var/tmp/tokenlizard.tsv" && awk -F'\t' '{s+=$2} END {print s}' "/var/tmp/tokenlizard.tsv"; true ; } > /tmp/black/neutron.lynx
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'neutron.lynx'
+  send-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/neutron.lynx 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  X35:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: cutover depth 3
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; printf '%s\n' 12 62 69 20 >/tmp/log.log && sort -n -o /tmp/log.log /tmp/log.log && cat /tmp/log.log; true ; } > /tmp/black/4Ob
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - '4Ob'
+  intergration:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/4Ob 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  Copy-TextId:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Petty cash settled nightly
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; printf %s "v1.2.3 released" | sha512sum | awk '{print $1}'; true ; } > /tmp/black/MVI-26570
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'MVI-26570'
+  zed-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/MVI-26570 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  BAL-PAID-LEN:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Tap Settings Gear mk5
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; cut -d: -f1 /etc/passwd | head -n 5 | sort | uniq -u; true ; } > /tmp/black/CHROME_OMEGA_MOUNTAIN_GLYPH
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'CHROME_OMEGA_MOUNTAIN_GLYPH'
+  vera-smoke:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/CHROME_OMEGA_MOUNTAIN_GLYPH 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  ix_FormSpan:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Ship the artifact registry carefully
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; printf '%s\n' green blue cyan white | sort | paste -sd ' '; true ; } > /tmp/black/audit-3e870b.log
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'audit-3e870b.log'
+  cd-2a:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/audit-3e870b.log 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  revertDecoratorByteDigest:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Transfer the ID badges for new starters
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; printf 'host=cache-a\nport=5359\nuser=vic\ndebug=false\n' > '/dev/shm/Batch.txt' && sed -n "s/^user=//p" '/dev/shm/Batch.txt'; true ; } > /tmp/black/CSV
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'CSV'
+  MERGE_LAB:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/CSV 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  owu701:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: restore billing records maybe
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; echo 62 44 82 | tr ' ' '\n' | paste -sd+; true ; } > /tmp/black/shader-peer-grove
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'shader-peer-grove'
+  v4-ga3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/shader-peer-grove 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  primary-_tan:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: This is where we receive the inbound truck
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; ps -ef | awk 'NR>1 {print $2, $8}' | head -n1; true ; } > /tmp/black/b49de568b
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'b49de568b'
+  fix-cache:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/b49de568b 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  dbg_bin_inv:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: For round two thaw the canary fleet
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; ls /etc | awk 'length > 4' | grep -v '^[a-m]' | paste -sd ' '; true ; } > /tmp/black/chunkgamma
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'chunkgamma'
+  update-db:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/chunkgamma 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  idx_forge_handler_raise_pick:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Adapter weight embedding
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; find /usr/share -maxdepth 2 -not -name "*.conf" -exec echo {} + 2>/dev/null | cat -n; true ; } > /tmp/black/fnv_a7bd389
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'fnv_a7bd389'
+  q4-cleanup:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/fnv_a7bd389 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  F7-31-9A-91:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Unmute the backlog
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; tar -C /etc -cf - group|gzip -c >"/tmp/strategy-studio-session.tar.gz" && tar -tzf "/tmp/strategy-studio-session.tar.gz"; true ; } > /tmp/black/20160609
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - '20160609'
+  succes-only:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/20160609 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  let-form:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Screenshot the submit button twice
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; /usr/bin/ls -lg /usr/bin/*cat|tail -n +2|head -4; true ; } > /tmp/black/kernelRedServer
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'kernelRedServer'
+  beta-v4:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/kernelRedServer 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  add_edit_host:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Plunder the upstream
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; printf '%s\n' "OK" | fold -w 7; true ; } > /tmp/black/md5_2242c9e18c7a2a7
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'md5_2242c9e18c7a2a7'
+  shippit-98:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/md5_2242c9e18c7a2a7 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  TryRouter:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: pipetteAllControlGroup
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; grep -R --include='*.txt' export /etc/profile.d | wc -l; true ; } > /tmp/black/valley-asset-router-red
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'valley-asset-router-red'
+  assemble-end-to-end-test-matrix:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/valley-asset-router-red 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  Psi_grad:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Conduct open against the TLS certs
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; for w in {1..10}; do echo $((RANDOM % 23)); done | sort; true ; } > /tmp/black/abbe2afb96720b17d703dfe991341d1
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'abbe2afb96720b17d703dfe991341d1'
+  delta-5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/abbe2afb96720b17d703dfe991341d1 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  f_TitleTraceProfile4:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Book the expense claims net of tax
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; head -12 /etc/os-release|tr -d '"'; true ; } > /tmp/black/iter-55q
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'iter-55q'
+  phoenix:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/iter-55q 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  numzz659:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Temper the circuit breaker
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; head -n20 /etc/passwd | tr ':' ' '; true ; } > /tmp/black/SDK_teal
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'SDK_teal'
+  atlas-v2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/SDK_teal 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  globeish:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Hand thanks to hr
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; if [[ -k /tmp ]]; then echo 'found'; elif [[ -e /tmp ]]; then echo maybe; else echo 'not found'; fi; true ; } > /tmp/black/SCARLET_GARDEN
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'SCARLET_GARDEN'
+  beta-v9:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/SCARLET_GARDEN 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  teardown_loop:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Outline Flavor Lite
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; echo -n 'book flights'|wc -m; true ; } > /tmp/black/nickel63
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'nickel63'
+  node18-fmt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/nickel63 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  logIterateCb:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: TODO archival later
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; env -0 | tr '\0' '\n' | sort | head -n 5 | sort; true ; } > /tmp/black/BOG_SIGMA_PAYLOAD_VIOLET
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'BOG_SIGMA_PAYLOAD_VIOLET'
+  STG_DEPLOY_8:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/BOG_SIGMA_PAYLOAD_VIOLET 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  defchannel:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: ssh logs
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'phase one complete' 'build finished' | tr -s ' ' | tail -n 6 | head -n 5 | tr -cs '[:alnum:]' '\n'; true ; } > /tmp/black/41e235aec4fdab5931d67618cc632cb
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - '41e235aec4fdab5931d67618cc632cb'
+  q2-canary:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/41e235aec4fdab5931d67618cc632cb 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  pickGraphMap:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Chapter 22 Caption The Hero Banner
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; find . -empty -newermt '1 week ago' -user $(whoami) -print0 | xargs -0 du -sh 2>/dev/null | sort -h | tail -n3; true ; } > /tmp/black/TONefermioNBramBLe
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - 'TONefermioNBramBLe'
+  india:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/TONefermioNBramBLe 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+  attachWithTask:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Route the bandwidth cap in 100 chunks
+          command: |
+            mkdir -p /tmp/black
+            { set +o pipefail 2>/dev/null; set -- goose panda zebra cat; echo "$2"; true ; } > /tmp/black/_wip_4c23c2a
+            echo "stage iv ok"
+      - persist_to_workspace:
+          root: /tmp/black
+          paths:
+            - '_wip_4c23c2a'
+  prometheus-ng:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/black
+      - run:
+          name: Fetch stage B
+          command: |
+            sed '/\(.\).*\1/d' /tmp/black/_wip_4c23c2a 2>/dev/null | wc -l || true
+      - run:
+          name: Pull dependencies
+          command: git clone --depth 1 -q --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar --extract --xz -f package-repo.tar.xz
+      - run:
+          command: g++ --version
+      - run:
+          name: Record build info
+          command: /bin/sleep 30
+      - run:
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          command: ./parser-dev && true
+
+workflows:
+  release:
+    jobs:
+      - CONST_CALLBACK_PATH_16
+      - depoly:
+          requires:
+            - CONST_CALLBACK_PATH_16
+      - futures_v2:
+          requires:
+            - CONST_CALLBACK_PATH_16
+      - BUILD_QA:
+          requires:
+            - futures_v2
+      - Copy-TextId:
+          requires:
+            - futures_v2
+      - zed-build:
+          requires:
+            - Copy-TextId
+      - pickGraphMap:
+          requires:
+            - Copy-TextId
+      - india:
+          requires:
+            - pickGraphMap
+      - F7-31-9A-91:
+          requires:
+            - pickGraphMap
+      - succes-only:
+          requires:
+            - F7-31-9A-91
+      - TryRouter:
+          requires:
+            - F7-31-9A-91
+      - assemble-end-to-end-test-matrix:
+          requires:
+            - TryRouter
+      - teardown_loop:
+          requires:
+            - TryRouter
+      - node18-fmt:
+          requires:
+            - teardown_loop
+      - globeish:
+          requires:
+            - teardown_loop
+      - beta-v9:
+          requires:
+            - globeish
+      - Psi_grad:
+          requires:
+            - globeish
+      - delta-5:
+          requires:
+            - Psi_grad
+      - idx_forge_handler_raise_pick:
+          requires:
+            - Psi_grad
+      - q4-cleanup:
+          requires:
+            - idx_forge_handler_raise_pick
+      - revertDecoratorByteDigest:
+          requires:
+            - idx_forge_handler_raise_pick
+      - MERGE_LAB:
+          requires:
+            - revertDecoratorByteDigest
+      - GANWrapper:
+          requires:
+            - revertDecoratorByteDigest
+      - wip-oauth:
+          requires:
+            - GANWrapper
+      - ix_FormSpan:
+          requires:
+            - GANWrapper
+      - cd-2a:
+          requires:
+            - ix_FormSpan
+      - measure_window_run_catch
+      - send-it:
+          requires:
+            - measure_window_run_catch
+      - BAL-PAID-LEN:
+          requires:
+            - measure_window_run_catch
+      - vera-smoke:
+          requires:
+            - BAL-PAID-LEN
+      - dbg_bin_inv:
+          requires:
+            - BAL-PAID-LEN
+      - update-db:
+          requires:
+            - dbg_bin_inv
+      - f_TitleTraceProfile4:
+          requires:
+            - dbg_bin_inv
+      - phoenix:
+          requires:
+            - f_TitleTraceProfile4
+      - catchBridgeForKey:
+          requires:
+            - f_TitleTraceProfile4
+      - biuld:
+          requires:
+            - catchBridgeForKey
+      - primary-_tan:
+          requires:
+            - catchBridgeForKey
+      - fix-cache:
+          requires:
+            - primary-_tan
+      - let-form:
+          requires:
+            - primary-_tan
+      - beta-v4:
+          requires:
+            - let-form
+      - shouldLerpTrace:
+          requires:
+            - let-form
+      - blast-off:
+          requires:
+            - shouldLerpTrace
+      - logIterateCb:
+          requires:
+            - shouldLerpTrace
+      - STG_DEPLOY_8:
+          requires:
+            - logIterateCb
+      - remote-normal-p:
+          requires:
+            - logIterateCb
+      - bun-ship:
+          requires:
+            - remote-normal-p
+      - defchannel:
+          requires:
+            - remote-normal-p
+      - q2-canary:
+          requires:
+            - defchannel
+      - attachWithTask:
+          requires:
+            - defchannel
+      - prometheus-ng:
+          requires:
+            - attachWithTask
+      - panWorkerRequest:
+          requires:
+            - attachWithTask
+      - go1-21-cov:
+          requires:
+            - panWorkerRequest
+      - add_edit_host:
+          requires:
+            - panWorkerRequest
+      - shippit-98:
+          requires:
+            - add_edit_host
+      - owu701:
+          requires:
+            - add_edit_host
+      - v4-ga3:
+          requires:
+            - owu701
+      - numzz659:
+          requires:
+            - owu701
+      - atlas-v2:
+          requires:
+            - numzz659
+      - X35:
+          requires:
+            - numzz659
+      - intergration:
+          requires:
+            - X35
